@@ -250,7 +250,9 @@ Statement St = null;
 
 ResultSet Rs = null;
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-    String Query = "select * from SELLERTBL where SELNAME='" + Uid.getText() + "' and SELPASS='" + password.getText() + "'";
+    if(RoleCb.getSelectedItem().toString().equals("Seller"))
+    {
+        String Query = "select * from SELLERTBL where SELNAME='" + Uid.getText() + "' and SELPASS='" + password.getText() + "'";
 try{
     
     Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/supermarketdb","root","new123");
@@ -267,7 +269,25 @@ try{
 {
     ex.printStackTrace();
 }
-
+    }else{
+         String Query = "select * from ADMINTBL where ADMINNAME='" + Uid.getText() + "' and ADMINPASS='" + password.getText() + "'";
+try{
+    
+    Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/supermarketdb","root","new123");
+       St = Con.createStatement();
+       Rs = St.executeQuery(Query);
+       if(Rs.next()){
+           new Products().setVisible(true);
+           this.dispose();
+       }
+       else{
+           JOptionPane.showMessageDialog(this, "Wrong Admin Id Or Password");
+       }
+}catch(SQLException ex)
+{
+    ex.printStackTrace();
+}
+    }
   
     }//GEN-LAST:event_jButton2MouseClicked
 
