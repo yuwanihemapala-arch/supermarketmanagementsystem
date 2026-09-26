@@ -1,34 +1,63 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
+     /*
+
+* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+
+* Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+
+*/
+
 package com.mycompany.supermarket;
 
+
+
 import java.sql.Connection;
+
 import java.sql.DriverManager;
+
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
+
 import java.sql.Statement;
+
 import javax.swing.JOptionPane;
+
 import javax.swing.table.DefaultTableModel;
+
 import net.proteanit.sql.DbUtils;
 
- 
+
+
+
 public class Selling extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Selling
-     */
-    public Selling() {
-        initComponents();
-        SelectSeller();
-    }
 
-   Connection Con = null;
-   Statement St = null;
-   ResultSet Rs = null;
-    @SuppressWarnings("unchecked")
-     public void SelectSeller()
+
+int Prid,AvailQty,newQty;
+
+Double Uprice=0.0,ProdTot=0.0,GrdTotal=0.0;
+
+int i=0;
+
+
+public Selling() {
+
+initComponents();
+
+SelectSeller();
+
+}
+
+
+
+Connection Con = null;
+
+Statement St = null;
+
+ResultSet Rs = null;
+
+@SuppressWarnings("unchecked")public void SelectSeller()
    {
        try{
        Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/supermarketdb","root","new123");
@@ -40,9 +69,9 @@ public class Selling extends javax.swing.JFrame {
        e.printStackTrace();
    }
    }
-     int Prid,newQty;
-     public void update()
-     {
+     
+     
+    public void updateStock() {
          try{
     Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/supermarketdb","root","new123");
     String Query = "UPDATE PRODUCTTBL SET PRODQTY=" +newQty+""
@@ -374,9 +403,7 @@ public class Selling extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void UpdateBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UpdateBtnMouseClicked
-   try{
-      BillTxt.print(); 
-   }catch(Exception e)
+
    {
        
    }
@@ -394,18 +421,19 @@ public class Selling extends javax.swing.JFrame {
         ProdQty.setText("");
 
     }//GEN-LAST:event_ClearBtnMouseClicked
-int i = 0;
+
     private void AddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddBtnMouseClicked
 if(ProdQty.getText().isEmpty()||ProdName.getText().isEmpty())   
 {
     JOptionPane.showMessageDialog(this, "Missing Information");
 } 
-else if(AvailQty <= Integer.valueOf(ProdQty.getText()))
+else if(AvailQty < Integer.valueOf(ProdQty.getText()))
 {
   JOptionPane.showMessageDialog(this, "Not Enough In Stock");  
 }
 else{
     i++;
+    Double enterQty = Double.valueOf(ProdQty.getText());
     ProdTot = Uprice * Double.valueOf(ProdQty.getText());
     GrdTotal = GrdTotal+ProdTot;
     if(i == 1)
@@ -415,7 +443,8 @@ else{
         BillTxt.setText(BillTxt.getText()+i+"\t"+ProdName.getText()+"\t"+Uprice+"\t"+ProdQty.getText()+"\t"+ProdTot+"\n");
     }
     Grdtotlbl.setText("Rs"+GrdTotal);
-    update();
+    newQty = AvailQty - Integer.valueOf(ProdQty.getText());
+    updateStock();
     
 }
     }//GEN-LAST:event_AddBtnMouseClicked
@@ -425,15 +454,16 @@ else{
         int Myindex = ProductTable.getSelectedRow();
         Prid = Integer.valueOf(model.getValueAt(Myindex, 0).toString());
         AvailQty = Integer.valueOf(model.getValueAt(Myindex, 2).toString());
-        newQty = AvailQty - Integer.valueOf(ProdQty.getText());
+        //newQty = AvailQty - Integer.valueOf(ProdQty.getText());
         ProdName.setText(model.getValueAt(Myindex, 1).toString());
         Uprice = Double.valueOf(model.getValueAt(Myindex, 3).toString());
         //ProdTot = Uprice * Integer.valueOf(ProdQty.getText());
         //ProdQty.setText(model.getValueAt(Myindex, 2).toString());
         //ProdPrice.setText(model.getValueAt(Myindex, 3).toString());
     }//GEN-LAST:event_ProductTableMouseClicked
-    Double Uprice=0.0,ProdTot=0.0,GrdTotal=0.0;
-    int AvailQty;
+    
+     
+   
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
 System.exit(0);
     }//GEN-LAST:event_jLabel1MouseClicked
