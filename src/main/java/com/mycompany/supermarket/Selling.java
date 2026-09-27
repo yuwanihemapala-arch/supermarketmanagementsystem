@@ -46,6 +46,7 @@ public Selling() {
 initComponents();
 
 SelectSeller();
+GetCat();
 
 }
 
@@ -57,7 +58,8 @@ Statement St = null;
 
 ResultSet Rs = null;
 
-@SuppressWarnings("unchecked")public void SelectSeller()
+@SuppressWarnings("unchecked")
+public void SelectSeller()
    {
        try{
        Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/supermarketdb","root","new123");
@@ -87,6 +89,23 @@ ResultSet Rs = null;
              e.printStackTrace();
          }
      }
+      private void GetCat()
+    {
+       try{
+       Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/supermarketdb","root","new123");
+       St = Con.createStatement();
+       String query = "Select * from CATEGORYTBL";
+       Rs = St.executeQuery(query);
+       while(Rs.next())
+       {
+           String Mycat = Rs.getString("CATNAME");
+           CatCb.addItem(Mycat);
+       }
+   }catch(Exception e)
+   {
+       e.printStackTrace();
+   }  
+    }
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -100,7 +119,6 @@ ResultSet Rs = null;
         ProdName = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         ProdQty = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         CatCb = new javax.swing.JComboBox<>();
         UpdateBtn = new javax.swing.JButton();
         DeleteBtn = new javax.swing.JButton();
@@ -112,6 +130,7 @@ ResultSet Rs = null;
         jScrollPane2 = new javax.swing.JScrollPane();
         BillTxt = new javax.swing.JTextArea();
         Grdtotlbl = new javax.swing.JLabel();
+        Filter = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -142,12 +161,12 @@ ResultSet Rs = null;
 
         ProdQty.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
 
-        jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 102, 102));
-        jLabel8.setText("Filter By");
-
         CatCb.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        CatCb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Beverage", "Vegetable", "Meat" }));
+        CatCb.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CatCbMouseClicked(evt);
+            }
+        });
         CatCb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CatCbActionPerformed(evt);
@@ -241,6 +260,14 @@ ResultSet Rs = null;
         Grdtotlbl.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
         Grdtotlbl.setText("Rs");
 
+        Filter.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        Filter.setText("Filter");
+        Filter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FilterMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -278,11 +305,11 @@ ResultSet Rs = null;
                                 .addGap(211, 211, 211)
                                 .addComponent(jLabel10))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(74, 74, 74)
-                                .addComponent(jLabel8)
-                                .addGap(44, 44, 44)
+                                .addGap(29, 29, 29)
                                 .addComponent(CatCb, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43)
+                                .addGap(55, 55, 55)
+                                .addComponent(Filter)
+                                .addGap(53, 53, 53)
                                 .addComponent(DeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -305,7 +332,7 @@ ResultSet Rs = null;
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10)
-                .addGap(4, 4, 4)
+                .addGap(6, 6, 6)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,11 +352,10 @@ ResultSet Rs = null;
                             .addComponent(AddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(52, 52, 52))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(DeleteBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(CatCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel8)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(DeleteBtn)
+                            .addComponent(CatCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Filter))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
@@ -411,7 +437,7 @@ ResultSet Rs = null;
     }//GEN-LAST:event_UpdateBtnMouseClicked
 
     private void DeleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteBtnMouseClicked
-        
+SelectSeller();        
     }//GEN-LAST:event_DeleteBtnMouseClicked
 
     private void ClearBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearBtnMouseClicked
@@ -493,6 +519,29 @@ System.exit(0);
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void CatCbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CatCbMouseClicked
+      
+    }//GEN-LAST:event_CatCbMouseClicked
+
+    private void FilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FilterMouseClicked
+             try{
+       Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/supermarketdb","root","new123");
+       St = Con.createStatement();
+       Rs = St.executeQuery ("Select * from CATEGORYTBL where CATNAME='"+CatCb.getSelectedItem().toString()+"'");
+       ProductTable.setModel(DbUtils.resultSetToTableModel(Rs));
+       while(Rs.next())
+       {
+           String Mycat = Rs.getString("CATNAME");
+           CatCb.addItem(Mycat);
+       }
+   }catch(Exception e)
+   {
+       e.printStackTrace();
+   } 
+    }//GEN-LAST:event_FilterMouseClicked
+  private void CatCbItemStateChanged(java.awt.event.MouseEvent evt){
+    
+  }
     /**
      * @param args the command line arguments
      */
@@ -535,6 +584,7 @@ System.exit(0);
     private javax.swing.JComboBox<String> CatCb;
     private javax.swing.JButton ClearBtn;
     private javax.swing.JButton DeleteBtn;
+    private javax.swing.JButton Filter;
     private javax.swing.JLabel Grdtotlbl;
     private javax.swing.JTextField ProdName;
     private javax.swing.JTextField ProdQty;
@@ -547,7 +597,6 @@ System.exit(0);
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

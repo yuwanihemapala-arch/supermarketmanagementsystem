@@ -26,6 +26,7 @@ public class Products extends javax.swing.JFrame {
     public Products() {
         initComponents();
         SelectSeller();
+        GetCat();
     }
  Connection Con = null;
    Statement St = null;
@@ -42,6 +43,23 @@ public class Products extends javax.swing.JFrame {
        e.printStackTrace();
    }
    }
+    private void GetCat()
+    {
+       try{
+       Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/supermarketdb","root","new123");
+       St = Con.createStatement();
+       String query = "Select * from CATEGORYTBL";
+       Rs = St.executeQuery(query);
+       while(Rs.next())
+       {
+           String Mycat = Rs.getString("CATNAME");
+           CatCb.addItem(Mycat);
+       }
+   }catch(Exception e)
+   {
+       e.printStackTrace();
+   }  
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -110,7 +128,6 @@ public class Products extends javax.swing.JFrame {
         jLabel9.setText("PRICE");
 
         CatCb.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        CatCb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Beverage", "Vegetable", "Meat" }));
 
         UpdateBtn.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         UpdateBtn.setText("Edit");
@@ -311,11 +328,14 @@ public class Products extends javax.swing.JFrame {
                         .addComponent(jLabel13)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 15, Short.MAX_VALUE)
+                        .addGap(0, 9, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel14))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(61, 61, 61))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addGap(18, 18, 18)))))
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
@@ -332,7 +352,7 @@ public class Products extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(111, 111, 111)
                 .addComponent(jLabel12)
-                .addGap(29, 29, 29)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel14)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel13)
